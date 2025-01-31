@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<entities xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+          xsi:noNamespaceSchemaLocation="http://moqui.org/xsd/entity-definition-3.xsd">
+    <!--PARTY ENTITY-->
+    <entity entity-name="Party" package="mantle.party">
+        <field name="partyId" type="id" is-pk="true"/>
+        <field name="partyTypeEnumId" type="id"/>
+        <relationship type="one" title="PartyType" related="moqui.basic.Enumeration" short-alias="type">
+            <key-map field-name="partyTypeEnumId"/>
+        </relationship>
+        <!--One-to-One (Party-Subtypes Relationship)-->
+        <relationship type="one-nofk" related="mantle.party.Organization" short-alias="org" mutable="true"/>
+        <relationship type="one-nofk" related="mantle.party.Person" short-alias="per" mutable="true"/>
+        <seed-data>
+            <moqui.basic.EnumerationType description="Party Type" enumTypeId="PartyType">
+                <moqui.basic.Enumeration enumId="Person"/>
+                <moqui.basic.Enumeration enumId="Organization"/>
+            </moqui.basic.EnumerationType>
+        </seed-data>
+        <master name="default">
+            <detail relationship="org"/>
+            <detail relationship="person"/>
+        </master>
+    </entity>
+
+    <!--Party Role-->
+    <entity entity-name="PartyRole" package="mantle.party">
+        <field name="partyId" type="id" is-pk="true"/>
+        <field name="roleTypeId" type="id" is-pk="true"/>
+        <field name="description" type="text-medium"/>
+        <relationship type="one" related="mantle.party.Party" short-alias="party"/>
+        <relationship type="one" related="mantle.party.RoleType" short-alias="role"/>
+    </entity>
+
+    <!--Role Type-->
+    <entity entity-name="RoleType" package="mantle.party" cache="true">
+        <field name="roleTypeId" type="id" is-pk="true"/>
+        <field name="description" type="text-medium"/>
+
+        <seed-data>
+            <mantle.party.RoleType description="Manager" roleTypeId="Employee"/>
+            <mantle.party.RoleType description="Customer" roleTypeId="Customer"/>
+            <mantle.party.RoleType description="Employer" roleTypeId="Employer"/>
+        </seed-data>
+    </entity>
+
+    <!--Organization-->
+    <entity entity-name="Organization" package="mantle.party">
+        <field name="partyId" type="id" is-pk="true"/>
+        <field name="organizationName" type="text-medium"/>
+        <relationship type="one" related="mantle.party.Party"/>
+    </entity>
+
+    <!--Person Entity-->
+    <entity entity-name="Person" package="mantle.party">
+        <field name="partyId" type="id" is-pk="true"/>
+        <field name="firstName" type="text-medium"/>
+        <field name="lastName" type="text-medium"/>
+        <field name="birthDate" type="date"/>
+        <relationship type="one" related="mantle.party.Party"/>
+    </entity>
+
+    <!--Contact Mech-->
+    <entity entity-name="ContactMech" package="mantle.party.contact" short-alias="contactMechs" use="nontransactional"
+            cache="never">
+        <field name="contactMechId" type="id" is-pk="true"/>
+        <field name="contactMechTypeEnumId" type="id"/>
+        <field name="infoString" type="text-medium"/>
+
+        <relationship type="one" title="ContactMechType" related="moqui.basic.Enumeration" short-alias="type">
+            <key-map field-name="contactMechTypeEnumId"/>
+        </relationship>
+        <relationship type="one-nofk" related="mantle.party.contact.TelecomNumber" short-alias="telecomNumber"
+                      mutable="true"/>
+        <relationship type="one-nofk" related="mantle.party.contact.PostalAddress" short-alias="postalAddress"
+                      mutable="true"/>
+        <seed-data>
+            <!--ek contact mech type k multiple purpose ho sakte -->
+            <moqui.basic.EnumerationType description="Contact Mechanism Type" enumTypeId="ContactMechType"/>
+            <moqui.basic.Enumeration enumId="CmtPostalAddress" description="Postal Address"
+                                     enumTypeId="ContactMechType"/>
+            <moqui.basic.Enumeration enumId="CmtTelecomNumber" description="Phone Number" enumTypeId="ContactMechType"/>
+            <moqui.basic.Enumeration enumId="CmtEmailAddress" description="Email Address" enumTypeId="ContactMechType"/>
+        </seed-data>
+    </entity>
+
+    <!--Party Contact Mech -->
+    <entity entity-name="PartyContactMech" package="mantle.party.contact">
+        <field name="partyId" type="id" is-pk="true"/>
+        <field name="contactMechId" type="id" is-pk="true"/>
+        <field name="contactMechPurposeId" type="id" is-pk="true"/>
+        <field name="fromDate" type="date" is-pk="true"/>
+        <field name="thruDate" type="date-time"/>
+        <relationship type="one" related="mantle.party.Party"/>
+        <relationship type="one" related="mantle.party.contact.ContactMech" short-alias="contactMech" mutable="true"/>
+        <relationship type="one" related="mantle.party.contact.ContactMechPurpose" short-alias="purpose"/>
+        <relationship type="one-nofk" related="mantle.party.contact.PostalAddress" short-alias="postalAddress"
+                      mutable="true"/>
+        <relationship type="one-nofk" related="mantle.party.contact.TelecomNumber" short-alias="telecomNumber"
+                      mutable="true"/>
+    </entity>
+
+    <!--Contact Mech Purpose-->
+    <entity entity-name="ContactMechPurpose" package="mantle.party.contact">
+        <field name="contactMechPurposeId" type="id" is-pk="true"/>
+        <field name="contactMechTypeEnumId" type="id"/>
+        <field name="description" type="text-medium"/>
+        <relationship type="one" title="ContactMechType" related="moqui.basic.Enumeration">
+            <key-map field-name="contactMechTypeEnumId"/>
+        </relationship>
+        <seed-data>
+            <ContactMechPurpose contactMechPurposeId="PostalPrimary" contactMechTypeEnumId="CmtPostalAddress"
+                                description="Postal - Primary"/>
+            <ContactMechPurpose contactMechPurposeId="PostalShippingDest" contactMechTypeEnumId="CmtPostalAddress"
+                                description="Postal - Shipping Destination"/>
+            <ContactMechPurpose contactMechPurposeId="PhonePrimary" contactMechTypeEnumId="CmtTelecomNumber"
+                                description="Phone - Primary"/>
+            <ContactMechPurpose contactMechPurposeId="PhoneHome" contactMechTypeEnumId="CmtTelecomNumber"
+                                description="Phone - Home"/>
+            <ContactMechPurpose contactMechPurposeId="EmailPrimary" contactMechTypeEnumId="CmtEmailAddress"
+                                description="Email - Primary Address"/>
+            <ContactMechPurpose contactMechPurposeId="EmailPayment" contactMechTypeEnumId="CmtEmailAddress"
+                                description="Email - Payment (AR)"/>
+            <ContactMechPurpose contactMechPurposeId="EmailOrder" contactMechTypeEnumId="CmtEmailAddress"
+                                description="Email - Order Notification"/>
+        </seed-data>
+    </entity>
+
+    <!--Postal Address-->
+    <entity entity-name="PostalAddress" package="mantle.party.contact">
+        <field name="contactMechId" type="id" is-pk="true"/>
+        <field name="toName" type="text-medium"/>
+        <field name="attnName" type="text-medium"/>
+        <field name="address1" type="text-medium"/>
+        <field name="city" type="text-medium"/>
+        <field name="postalCode" type="text-medium"/>
+        <relationship type="one" related="mantle.party.contact.ContactMech"/>
+    </entity>
+
+    <!--Telecom Number-->
+    <entity entity-name="TelecomNumber" package="mantle.party.contact">
+        <field name="contactMechId" type="id" is-pk="true"/>
+        <field name="countryCode" type="text-short"/>
+        <field name="areaCode" type="text-short"/>
+        <field name="contactNumber" type="text-short"/>
+        <relationship type="one" related="mantle.party.contact.ContactMech"/>
+    </entity>
+</entities>

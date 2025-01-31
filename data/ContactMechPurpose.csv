@@ -1,0 +1,5 @@
+mantle.party.contact.ContactMechPurpose, demo
+contactMechPurposeId,contactMechTypeEnumId,description
+EmailPrimary,CmtEmailAddress,Primary Email Address
+PostalPrimary,CmtPostalAddress,Primary Postal Address
+PhonePrimary,CmtTelecomNumber,Primary Phone Number

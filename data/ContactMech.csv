@@ -1,0 +1,12 @@
+mantle.party.contact.ContactMech, demo
+contactMechId,contactMechTypeEnumId,infoString
+CM101,CmtEmailAddress,poorvi.shukla@example.com
+CM102,CmtEmailAddress,deeksha.shukla@example.com
+CM103,CmtEmailAddress,arjun.purohit@example.com
+CM104,CmtEmailAddress,mahak.pandey@example.com
+CM105,CmtEmailAddress,kashish.raghuwanshi@example.com
+CM106,CmtPostalAddress,78 Scheme
+CM107,CmtPostalAddress,456 Vijay Nagar
+CM108,CmtPostalAddress,123 Silicon City
+CM109,CmtTelecomNumber,9108689307
+CM110,CmtTelecomNumber,6266536603

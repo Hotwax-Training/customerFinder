@@ -1,0 +1,5 @@
+mantle.party.RoleType, demo
+roleTypeId,description
+Manager,Manager
+Customer,Customer
+Employee,Employee

@@ -1,0 +1,12 @@
+mantle.party.PartyRole, demo
+partyId,roleTypeId,description
+P101,Customer,Regular customer
+P102,Customer,Premium customer
+P103,Customer,Frequent buyer
+P106,Manager,Primary Manager
+P107,Manager,HR Manager
+P104,Employee,Senior Developer
+P105,Employee,Junior Lawyer
+P108,Employee,Researcher
+P109,Employee,Graphic Designer
+P110,Employee,Student Coordinator

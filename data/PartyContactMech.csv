@@ -1,0 +1,12 @@
+mantle.party.contact.PartyContactMech, demo
+partyId,contactMechId,contactMechPurposeId,fromDate,thruDate
+P101,CM101,EmailPrimary,2025-01-01,
+P102,CM102,EmailPrimary,2025-01-01,
+P103,CM103,EmailPrimary,2025-02-05,
+P104,CM104,EmailPrimary,2025-03-10,
+P105,CM105,EmailPrimary,2025-07-25,
+P106,CM106,PostalPrimary,2025-04-23,
+P107,CM107,PostalPrimary,2025-05-12,
+P108,CM108,PostalPrimary,2025-11-07,
+P109,CM109,PhonePrimary,2025-01-14,
+P110,CM110,PhoneHome,2025-02-05,
